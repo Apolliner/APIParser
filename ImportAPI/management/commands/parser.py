@@ -63,12 +63,12 @@ class APIParser:
                     else:
                         #Если вызывает ошибку, то проверяем не уникален ли ключ. И если уникален, то обновляем элемент с этим ключом
                         if list(in_serializer.errors.keys())[0] == SettingsImportAPI.unique_field:
-                            for budget in SettingsImportAPI.use_model.objects.all().filter(code=block[SettingsImportAPI.unique_field]):
+                            for model_obj in SettingsImportAPI.use_model.objects.all().filter(code=block[SettingsImportAPI.unique_field]):
                                 #Перевод даты в нужный для сравнения формат
                                 date = datetime.strptime(block[SettingsImportAPI.date_field], SettingsImportAPI.date_format)
                                 #Если совпадают коды и дата загрузки больше, чем записанная в БД
-                                if budget.code == block[SettingsImportAPI.unique_field] and date > budget.loaddate:
-                                    in_serializer = APISerializer(budget, data=block)
+                                if model_obj.code == block[SettingsImportAPI.unique_field] and date > model_obj.loaddate:
+                                    in_serializer = APISerializer(model_obj, data=block)
                                     in_serializer.is_valid()
                                     in_serializer.save()
 
