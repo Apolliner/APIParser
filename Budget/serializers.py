@@ -1,9 +1,8 @@
 from rest_framework import serializers
-from .models import Budget
+from Budget.management.commands.settings_parser import SettingsImportAPI
 
-class BudgetSerializer(serializers.ModelSerializer):
+class UploadedAPISerializer(serializers.ModelSerializer):
     class Meta:
-        model = Budget
-        #fields = ('code', 'name', 'parentcode', 'startdate', 'enddate', 'status', 'budgettype')
-        fields = '__all__'
+        model = SettingsImportAPI.use_model
+        fields = SettingsImportAPI.fields
 

@@ -2,11 +2,9 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from Budget import views
 
-# Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'budget', views.BudgetViewSet)
+router.register(r'uploadedAPI', views.UploadedAPIViewSet)
 
-# The API URLs are now determined automatically by the router.
 urlpatterns = [
     path('', include(router.urls)),
 ]

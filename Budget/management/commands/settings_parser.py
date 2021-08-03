@@ -1,28 +1,35 @@
+from Budget.models import Budget
+
 """
     Настройки парсера
 """
-class FieldsMappingSerializer(serializers.ModelSerializer):
-    class Meta:
-    fields_map = {
-    #'поле_модели': {'json_field': 'поле_json', 'to_model': 'в какой модели ищем', 'to_field': 'поле для поиска', 'values_map': {'какое значение': 'на какое заменяем'}},
-    'code': {'json_field': 'code', 'to_model': 'Budget', 'to_field': 'code', 'values_map': {'какое значение': 'на какое заменяем'}},
-    'name': {'json_field': 'name', 'to_model': 'Budget', 'to_field': 'code', 'values_map': {'какое значение': 'на какое заменяем'}},
-    'startdate': {'json_field': 'startdate', 'to_model': 'Budget', 'to_field': 'startdate', 'values_map': {'какое значение': 'на какое заменяем'}},
-    'enddate': {'json_field': 'enddate', 'to_model': 'Budget', 'to_field': 'enddate', 'values_map': {'какое значение': 'на какое заменяем'}},
-    'status': {'json_field': 'status', 'to_model': 'Budget', 'to_field': 'status', 'values_map': {'какое значение': 'на какое заменяем'}},
-    'budgettype': {'json_field': 'budgtypecode', 'to_model': 'Budget', 'to_field': 'budgettype', 'values_map': {'какое значение': 'на какое заменяем'}},
-    }
+class SettingsImportAPI:
+    """ Настройки парсера API"""
+    base_url = 'http://budget.gov.ru/epbs/registry/7710568760-BUDGETS/data'
+    # Дополнительные условия поиска писать по порядку, разделяя символом '&'
+    conditions_url = 'filterstatus=ACTIVE'
+    # Указывать изменяемые поля занесением словарей с ключами 'json_field' и 'model_field' в список
+    replacing_fields = [
+                        {'json_field': 'budgtypecode',
+                         'model_field': 'budgettype'},
+                       ]
+    # Указывать изменяемые значения полей занесением словарей с ключами 'json_field', 'old_value', 'new_value' в список
+    replacing_field_values = [
+                        {'json_field': 'enddate',
+                         'old_value': '',
+                         'new_value': None},
+                             ]
+    # Поле с уникальным значением по которому парсер определяет, что поле уже загружено
+    unique_field = 'code'
+    # Поле с датой, по которой определяется перезаписывать ли запись в БД или оставить старую
+    date_field = 'loaddate'
+    # Формат даты
+    date_format = '%Y-%m-%d %H:%M:%S.%f'
 
+    """ Настройки сериалайзера """
+    # Используемая модель БД
+    use_model = Budget
+    # Выбирается либо список полей, либо список исключёных полей. Второе значение определятся как ''
+    fields = '__all__'
+    exclude = ['parentcode']
 
-
-class APIImport:
-    """(возможно имя не лучшее) который отвечает за взаимодействие через api, а также по заданным настройкам создает экземпляр FieldsMappingSerializer
-    Пример использования класса
-    """
-    url = 'http://budget.gov.ru/epbs/registry/7710568760-BUDGETS/data?pageSize=10&filterstatus=ACTIVE&pageNum=1'
-    model = models.Budget
-    fields_mapping = {
-    'parentcode': {'json_field': 'parentcode', 'to_field': 'code', 'values_map': {'00000000': None}},
-    'budgettype': {'json_field': 'budgtypecode', 'values_map': {'11': BudgetType.CITY, '12': BudgetType.LOCAL, '13': BudgetType.LOCAL, '14': BudgetType.LOCAL}},
-    'id': {'json_field': 'code', 'to_field': 'code'}}
-import_ = api_import.APIImport(url, model, fields_mapping).make_import()
