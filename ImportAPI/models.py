@@ -20,7 +20,11 @@ class BudgetType(models.TextChoices):
    FFOMS = "08", 'Бюджет ФФОМС'
    TFOMS = "09", 'Бюджет ТФОМС'
    LOCAL = "10", 'Бюджет поселения'
-   #Есть 13 код в документации не описан, возможно есть и другие
+   NONE_DESCRIPTION_11 = "11", ',Без описания 11'
+   NONE_DESCRIPTION_12 = "12", ',Без описания 12'
+   NONE_DESCRIPTION_13 = "13", ',Без описания 13'
+   NONE_DESCRIPTION_14 = "14", ',Без описания 14'
+   NONE_DESCRIPTION_15 = "15", ',Без описания 15'
    DISTRIBUTED = "98", 'Распределяемый доход'
    ORGANIZATION = "99", 'Доход организации (только для ПДИ)'
    __empty__ = '(Unknown)'
@@ -47,16 +51,16 @@ class GlavBudgetClass(models.Model):
    """Справочник главы по бюджетной классификации."""
 
    # guid                = models.CharField("Глобально-уникальный идентификатор записи", max_length=36)
-   code                = models.CharField("Код", max_length=3, blank=False, null=False)  # ! если не будут пересекаться добавить: , unique=True
+   code                = models.CharField("Код", max_length=3, blank=False, null=False, unique=True)  # ! если не будут пересекаться добавить: , unique=True
    name                = models.TextField("Сокращенное наименование", max_length=254, blank=True, null=True)
    startdate           = models.DateTimeField("Дата начала действия записи", blank=False, null=False, default=datetime.datetime.now)
    enddate             = models.DateTimeField("Дата окончания действия записи", null=True, blank=True)
-   budget              = models.ForeignKey(Budget, verbose_name="Бюджет", blank=False, null=False, on_delete=models.CASCADE)
+   #budget              = models.ForeignKey(Budget, verbose_name="Бюджет", blank=False, null=False, on_delete=models.CASCADE)
    # tofkcode
    # ppocode
    #dateinclusion       = models.DateTimeField("Дата включения кода", blank=False, null=False, default=datetime.datetime.now)
    #dateexclusion       = models.DateTimeField("Дата исключения кода")
-   # year                = models.DateField("Год")
+   #year                = models.DateField("Год")
 
    class Meta:
        verbose_name = 'Справочник главы по бюджетной классификации'

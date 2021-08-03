@@ -67,7 +67,7 @@ class APIParser:
                                 #Перевод даты в нужный для сравнения формат
                                 date = datetime.strptime(block[SettingsImportAPI.date_field], SettingsImportAPI.date_format)
                                 #Если совпадают коды и дата загрузки больше, чем записанная в БД
-                                if model_obj.code == block[SettingsImportAPI.unique_field] and date > model_obj.loaddate:
+                                if getattr(model_obj, SettingsImportAPI.unique_field) == block[SettingsImportAPI.unique_field] and date > getattr(model_obj, SettingsImportAPI.date_field):
                                     in_serializer = APISerializer(model_obj, data=block)
                                     in_serializer.is_valid()
                                     in_serializer.save()
