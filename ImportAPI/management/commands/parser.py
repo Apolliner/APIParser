@@ -57,6 +57,12 @@ class APIParser:
                     self.replacingFields(block)
 
                     in_serializer = APISerializer(data=block)
+                    # Поиск родительского элемента
+                    if SettingsImportAPI.search_parent and block[SettingsImportAPI.json_parent_field]:
+                        for model_obj in SettingsImportAPI.use_model.objects.all().filter(code=block[SettingsImportAPI.search_parentcode]):
+                            if getattr(model_obj, SettingsImportAPI.search_parentcode) == block[SettingsImportAPI.json_parent_field]:
+                                block[SettingsImportAPI.json_parent_field] = model_obj.id
+                                break
                     if in_serializer.is_valid():
                         #Если проходит проверку то сохраняем в бд
                         in_serializer.save()

@@ -33,7 +33,7 @@ class Budget(models.Model):
    # guid                = models.CharField("Глобально-уникальный идентификатор записи", max_length=36)  # ! Не берем при импорте
    code                = models.CharField("Код", max_length=8, blank=False, null=False, unique=True)
    name                = models.TextField("Полное наименование", max_length=2000, blank=False, null=False)
-   parentcode          = models.AutoField(primary_key=True) #models.ForeignKey('self', verbose_name="Вышестоящий бюджет", blank=True, null=True, on_delete=models.SET_NULL)
+   parentcode          = models.ForeignKey('self', verbose_name="Вышестоящий бюджет", blank=True, null=True, on_delete=models.SET_NULL)
    startdate           = models.DateTimeField("Дата начала действия записи", blank=False, null=False, default=datetime.datetime.now)
    enddate             = models.DateTimeField("Дата окончания действия записи", blank=True, null=True)
    status              = models.CharField("Статус записи", max_length=7, choices=KBKStatus.choices, blank=False, null=False, default=KBKStatus.ACTIVE)

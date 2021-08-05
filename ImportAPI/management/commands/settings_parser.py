@@ -31,8 +31,13 @@ class SettingsImportBudget:
     # Используемая модель БД
     use_model = Budget
     # Выбирается либо список полей, либо список исключёных полей. Второе значение определятся как ''
-    fields = ''
-    exclude = ['parentcode']
+    fields = '__all__'
+    exclude = []
+    # Поиск родительского значения
+    search_parent = True
+    # поле по которому производится поиск
+    search_parentcode = 'code'
+    json_parent_field = 'parentcode'
 
 
 class SettingsImportGlavBudget:
@@ -64,7 +69,11 @@ class SettingsImportGlavBudget:
     # Выбирается либо список полей, либо список исключёных полей. Второе значение определятся как ''
     fields = '__all__'
     exclude = []
-
+    # Поиск родительского значения
+    search_parent = False
+    # поле по которому производится поиск
+    search_parentcode = ''
+    json_parent_field = ''
 
 
 
