@@ -35,6 +35,13 @@ class APIParser:
         if SettingsImportAPI.replacing_fields:
             for replace in SettingsImportAPI.replacing_fields:
                 block[replace['model_field']] = block.pop(replace['json_field'])
+    def searchParent(self, block):
+        parent = SettingsImportAPI.use_model.objects.filter(
+            code__icontains=int(block[SettingsImportAPI.json_parent_field]))
+        if parent:
+            block[SettingsImportAPI.json_parent_field] = parent[0].id
+        else:
+            block[SettingsImportAPI.json_parent_field] = ''
     def urlGenerator(self, number_page):
         """ Генерирует URL согласно полученным настройкам """
         return f'{SettingsImportAPI.base_url}?pageSize={self.len_page}&pageNum={number_page}&{SettingsImportAPI.conditions_url}'
@@ -56,30 +63,30 @@ class APIParser:
                     self.replacingFieldsValues(block)
                     #Замена названий соответствующих полей
                     self.replacingFields(block)
-
-                    in_serializer = APISerializer(data=block)
                     # Поиск родительского элемента
                     if SettingsImportAPI.search_parent and block[SettingsImportAPI.json_parent_field]:
-                        parent = SettingsImportAPI.use_model.objects.filter(code__icontains=int(block[SettingsImportAPI.json_parent_field]))
-                        if parent:
-                            block[SettingsImportAPI.json_parent_field] = parent[0].id
-                        else:
-                            block[SettingsImportAPI.json_parent_field] = ''
-                    if in_serializer.is_valid():
-                        #Если проходит проверку то сохраняем в бд
-                        in_serializer.save()
+                        self.searchParent(block)
+                    #Проверяем нет ли такого же элемента
+                    not_unique = SettingsImportAPI.use_model.objects.filter(code=block[SettingsImportAPI.unique_field])
+                    if not_unique:
+                        model_obj = not_unique[0]
+                        # Перевод даты в нужный для сравнения формат
+                        date = datetime.strptime(block[SettingsImportAPI.date_field], SettingsImportAPI.date_format)
+                        # Если совпадают коды и дата загрузки больше, чем записанная в БД
+                        if getattr(model_obj, SettingsImportAPI.unique_field) == block[
+                            SettingsImportAPI.unique_field] and date > getattr(model_obj, SettingsImportAPI.date_field):
+                            in_serializer = APISerializer(model_obj, data=block)
+                            if in_serializer.is_valid():
+                                in_serializer.save()
+                            else:
+                                print(F"Ошибка валидации обновляемой записи - {in_serializer.errors.keys()}")
                     else:
-                        #Если вызывает ошибку, то проверяем не уникален ли ключ. И если уникален, то обновляем элемент с этим ключом
-                        if list(in_serializer.errors.keys())[0] == SettingsImportAPI.unique_field:
-                            #print(F"in_serializer.errors.keys() - {in_serializer.errors.keys()}")
-                            for model_obj in SettingsImportAPI.use_model.objects.all().filter(code=block[SettingsImportAPI.unique_field]):
-                                #Перевод даты в нужный для сравнения формат
-                                date = datetime.strptime(block[SettingsImportAPI.date_field], SettingsImportAPI.date_format)
-                                #Если совпадают коды и дата загрузки больше, чем записанная в БД
-                                if getattr(model_obj, SettingsImportAPI.unique_field) == block[SettingsImportAPI.unique_field] and date > getattr(model_obj, SettingsImportAPI.date_field):
-                                    in_serializer = APISerializer(model_obj, data=block)
-                                    in_serializer.is_valid()
-                                    in_serializer.save()
+                        in_serializer = APISerializer(data=block)
+                        if in_serializer.is_valid():
+                            #Если проходит проверку то сохраняем в бд
+                            in_serializer.save()
+                        else:
+                            print(F"Ошибка валидации новой записи- {in_serializer.errors.keys()}")
 
             elif response.status_code == 404:
                 print('Страница с номером {number_page} недоступна.')
