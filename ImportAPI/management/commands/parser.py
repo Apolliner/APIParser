@@ -1,5 +1,6 @@
 from rest_framework.parsers import JSONParser
 from django.core.management.base import BaseCommand, CommandError
+from django import db
 from rest_framework import serializers
 from datetime import datetime
 import pytz
@@ -59,16 +60,18 @@ class APIParser:
                     in_serializer = APISerializer(data=block)
                     # Поиск родительского элемента
                     if SettingsImportAPI.search_parent and block[SettingsImportAPI.json_parent_field]:
-                        for model_obj in SettingsImportAPI.use_model.objects.all().filter(code=block[SettingsImportAPI.search_parentcode]):
-                            if getattr(model_obj, SettingsImportAPI.search_parentcode) == block[SettingsImportAPI.json_parent_field]:
-                                block[SettingsImportAPI.json_parent_field] = model_obj.id
-                                break
+                        parent = SettingsImportAPI.use_model.objects.filter(code__icontains=int(block[SettingsImportAPI.json_parent_field]))
+                        if parent:
+                            block[SettingsImportAPI.json_parent_field] = parent[0].id
+                        else:
+                            block[SettingsImportAPI.json_parent_field] = ''
                     if in_serializer.is_valid():
                         #Если проходит проверку то сохраняем в бд
                         in_serializer.save()
                     else:
                         #Если вызывает ошибку, то проверяем не уникален ли ключ. И если уникален, то обновляем элемент с этим ключом
                         if list(in_serializer.errors.keys())[0] == SettingsImportAPI.unique_field:
+                            #print(F"in_serializer.errors.keys() - {in_serializer.errors.keys()}")
                             for model_obj in SettingsImportAPI.use_model.objects.all().filter(code=block[SettingsImportAPI.unique_field]):
                                 #Перевод даты в нужный для сравнения формат
                                 date = datetime.strptime(block[SettingsImportAPI.date_field], SettingsImportAPI.date_format)
@@ -84,6 +87,7 @@ class APIParser:
             #Если на странице меньше записей чем указанный размер страницы
             if len(data['data']) != self.len_page:
                 break
+            print(F"Обработана страница - {number_page}")
             number_page += 1
         finish = time.time()
         print(F"Загрузка завершена. Время загрузки: {round(finish - start, 1)} секунд")
