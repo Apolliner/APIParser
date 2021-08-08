@@ -7,7 +7,36 @@ import pytz
 import requests
 import io
 import time
+import collections
 from ImportAPI.management.commands.settings_parser import SettingsImportAPI
+
+def serializer_factory(use_model, fields=None, **kwargs):
+    def _get_declared_fields(attrs):
+        if fields == '__all__':
+            pass
+        else:
+            fields = [(field_name, attrs.pop(field_name))
+                      for field_name, obj in list(attrs.items())
+                      if isinstance(obj, Field)]
+            fields.sort(key=lambda x: x[1]._creation_counter)
+        return OrderedDict(fields)
+    class Base(object):
+        pass
+    Base._declared_fields = _get_declared_fields(kwargs)
+    class MySerializer(Base, ModelSerializer):
+        class Meta:
+            model = use_model
+        if fields:
+            setattr(Meta, "fields", fields)
+    return MySerializer
+
+def typebase_serializer_factory(use_model):
+    serializer_factory(
+        use_model, fields='__all__',
+        owner=HiddenField(default=CurrentUserDefault()),
+    )
+    return myserializer
+
 
 class APISerializer(serializers.ModelSerializer):
     class Meta:
