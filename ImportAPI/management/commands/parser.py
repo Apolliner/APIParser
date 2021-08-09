@@ -10,33 +10,24 @@ import time
 import collections
 from ImportAPI.management.commands.settings_parser import SettingsImportAPI
 
-def serializer_factory(use_model, fields=None, **kwargs):
-    def _get_declared_fields(attrs):
-        if fields == '__all__':
-            pass
-        else:
-            fields = [(field_name, attrs.pop(field_name))
-                      for field_name, obj in list(attrs.items())
-                      if isinstance(obj, Field)]
-            fields.sort(key=lambda x: x[1]._creation_counter)
-        return OrderedDict(fields)
-    class Base(object):
-        pass
-    Base._declared_fields = _get_declared_fields(kwargs)
-    class MySerializer(Base, ModelSerializer):
-        class Meta:
-            model = use_model
-        if fields:
-            setattr(Meta, "fields", fields)
-    return MySerializer
 
-def typebase_serializer_factory(use_model):
-    serializer_factory(
-        use_model, fields='__all__',
-        owner=HiddenField(default=CurrentUserDefault()),
-    )
-    return myserializer
+class BaseSerializer(serializers.ModelSerializer):
+    """ Базовый сериалайзер"""
+    class Meta:
+        model = SettingsImportAPI.use_model
+        fields = SettingsImportAPI.fields
 
+def assembler_serializer():
+    """
+        Собирает сериалайзер с нужными параметрами поиска и замены полей
+    """
+    serializer = BaseSerializer
+    for mapping_field in SettingsImportAPI.mapping_fields:
+        setattr(serializer, mapping_field['json_field'], serializers.SerializerMethodField(source=mapping_field['to_field']))
+        #Если есть заменяемые значения поля
+        #if mapping_field['values_map']:
+
+    return serializer
 
 class APISerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,17 +44,14 @@ class APISerializer(serializers.ModelSerializer):
 class APIParser:
     """ Генерирует url страниц, скачивает JSON содержимое, обрабатывает и записывает в БД """
     len_page = 1000
+    serializer = assembler_serializer()
     def replacingFieldsValues(self, block):
         """ Заменяет список указанных в параметрах значений полей"""
         if SettingsImportAPI.replacing_field_values:
             for replace in SettingsImportAPI.replacing_field_values:
                 if block[replace['json_field']] == replace['old_value']:
                     block[replace['json_field']] = replace['new_value']
-    def replacingFields(self, block):
-        """ Заменяет список указанных в параметрах полей"""
-        if SettingsImportAPI.replacing_fields:
-            for replace in SettingsImportAPI.replacing_fields:
-                block[replace['model_field']] = block.pop(replace['json_field'])
+
     def searchParent(self, block):
         parent = SettingsImportAPI.use_model.objects.filter(
             code__icontains=int(block[SettingsImportAPI.json_parent_field]))
@@ -90,8 +78,6 @@ class APIParser:
                 for number_block, block in enumerate(data['data']):
                     #Замена значений полей на допустимые
                     self.replacingFieldsValues(block)
-                    #Замена названий соответствующих полей
-                    self.replacingFields(block)
                     # Поиск родительского элемента
                     if SettingsImportAPI.search_parent and block[SettingsImportAPI.json_parent_field]:
                         self.searchParent(block)
@@ -104,13 +90,13 @@ class APIParser:
                         # Если совпадают коды и дата загрузки больше, чем записанная в БД
                         if getattr(model_obj, SettingsImportAPI.unique_field) == block[
                             SettingsImportAPI.unique_field] and date > getattr(model_obj, SettingsImportAPI.date_field):
-                            in_serializer = APISerializer(model_obj, data=block)
+                            in_serializer = self.serializer(model_obj, data=block)
                             if in_serializer.is_valid():
                                 in_serializer.save()
                             else:
                                 print(F"Ошибка валидации обновляемой записи - {in_serializer.errors.keys()}")
                     else:
-                        in_serializer = APISerializer(data=block)
+                        in_serializer = self.serializer(data=block)
                         if in_serializer.is_valid():
                             #Если проходит проверку то сохраняем в бд
                             in_serializer.save()

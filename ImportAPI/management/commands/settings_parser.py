@@ -39,6 +39,13 @@ class SettingsImportBudget:
     search_parentcode = 'code'
     json_parent_field = 'parentcode'
 
+    #Обновлённая замена полей
+    mapping_fields = [
+        {'json_field': 'budgtypecode', 'to_model': Budget, 'to_field': 'budgettype', 'values_map': '', 'parent': ''},
+        {'json_field': 'enddate', 'to_model': Budget, 'to_field': 'enddate', 'values_map': {'': None}, 'parent': ''},
+        {'json_field': 'code', 'to_model': Budget, 'to_field': 'code', 'values_map': '', 'parent': 'code'},
+        ]
+
 
 class SettingsImportGlavBudget:
     """ Настройки парсера GlavBudget"""
