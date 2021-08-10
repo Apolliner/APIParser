@@ -19,7 +19,7 @@ def assembler_serializer():
         class Meta:
             model = SettingsImportAPI.use_model
             fields = SettingsImportAPI.fields
-    def fabric_get_parent_method(name, use_model):
+    def fabric_get_parent_method(field, parent_field, use_model, serializer):
         """
             Принимает имя метода и используемую модель, возвращает метод get_<field_name>,
             работающий с выбранной моделью и полем
@@ -29,24 +29,25 @@ def assembler_serializer():
                 Базовый метод для создания обработки поля
             """
             parent = use_model.objects.filter(
-                code__icontains=int(instance))
+                code__icontains=int(instance[parent_field]))
             print(F"use_model - {use_model}, parent - {parent}")
             if parent:
                 print(f"parent[0].id - {parent[0].id}")
                 return parent[0].id
             else:
                 return None
-        return get_base_parent
+
+        setattr(serializer, f"get_{field}", get_base_parent.__get__(serializer, type(serializer)))
+        return serializer
 
     for mapping_field in SettingsImportAPI.mapping_fields:
         # Если есть заменяемые значения поля
         if mapping_field['parent']:
             # Добавление собираемого на фабрике метода get_<field_name>
-            setattr(MySerializer, f"get_{mapping_field['json_field']}",
-                    fabric_get_parent_method(mapping_field['parent'], SettingsImportAPI.use_model))
+            serializer = fabric_get_parent_method(mapping_field['to_field'], mapping_field['parent'],
+                                                  SettingsImportAPI.use_model, MySerializer)
             # Добавление поля, обращающегося к методу get_<field_name>
-            setattr(MySerializer, mapping_field['parent'],
-            serializers.SerializerMethodField())
+            setattr(serializer, mapping_field['to_field'], serializers.SerializerMethodField(method_name='get_parentcode'))
         # Если нет поиска родительского значения
         else:
             setattr(MySerializer, mapping_field['json_field'], serializers.SerializerMethodField(source=mapping_field['to_field']))
@@ -92,6 +93,7 @@ class APIParser:
         """ Запрашивает у генератора URL, отправляет запрос, получает и обрабатывает ответ, разбирает на блоки """
         start = time.time()
         number_page = 1
+        self.serializer.get_parentcode({'code': '1'})
         print(f"\n\nМетоды - {inspect.getmembers(self.serializer, predicate=inspect.ismethod)}\n\n")
         # Цикл по генерируемым URL страниц.
         while True:
