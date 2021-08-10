@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 
 def serializer_factory(use_model, fields=None, **kwargs):
     def _get_declared_fields(attrs):
@@ -20,7 +22,7 @@ def serializer_factory(use_model, fields=None, **kwargs):
     return MySerializer
 
 def typebase_serializer_factory(use_model):
-    serializer_factory(
+    myserializer = serializer_factory(
         use_model, fields='__all__',
         owner=HiddenField(default=CurrentUserDefault()),
     )

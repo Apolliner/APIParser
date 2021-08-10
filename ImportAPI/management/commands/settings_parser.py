@@ -43,7 +43,7 @@ class SettingsImportBudget:
     mapping_fields = [
         {'json_field': 'budgtypecode', 'to_model': Budget, 'to_field': 'budgettype', 'values_map': '', 'parent': ''},
         {'json_field': 'enddate', 'to_model': Budget, 'to_field': 'enddate', 'values_map': {'': None}, 'parent': ''},
-        {'json_field': 'code', 'to_model': Budget, 'to_field': 'code', 'values_map': '', 'parent': 'code'},
+        {'json_field': 'parentcode', 'to_model': Budget, 'to_field': 'parentcode', 'values_map': '', 'parent': 'code'},
         ]
 
 
