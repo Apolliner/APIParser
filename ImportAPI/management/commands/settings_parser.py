@@ -34,9 +34,6 @@ class SettingsImportBudget:
     fields = '__all__'
     exclude = []
     # Поиск родительского значения
-    search_parent = True
-    # поле по которому производится поиск
-    search_parentcode = 'code'
     json_parent_field = 'parentcode'
 
     #Обновлённая замена полей
