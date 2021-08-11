@@ -9,53 +9,14 @@ import inspect
 from ImportAPI.management.commands.settings_parser import SettingsImportAPI
 
 
-def assembler_serializer():
-    """
-        Собирает сериализатор с нужными параметрами поиска и замены полей
-    """
 
-    class MySerializer(serializers.ModelSerializer):
-        """ Базовый сериализатор"""
-        class Meta:
-            model = SettingsImportAPI.use_model
-            fields = SettingsImportAPI.fields
-    def fabric_get_parent_method(field, parent_field, use_model, serializer):
-        """
-            Принимает имя метода и используемую модель, возвращает метод get_<field_name>,
-            работающий с выбранной моделью и полем
-        """
-        def get_base_parent(self, instance):
-            """
-                Базовый метод для создания обработки поля
-            """
-            parent = use_model.objects.filter(
-                code__icontains=int(instance[parent_field]))
-            print(F"use_model - {use_model}, parent - {parent}")
-            if parent:
-                print(f"parent[0].id - {parent[0].id}")
-                return parent[0].id
-            else:
-                return None
-
-        setattr(serializer, f"get_{field}", get_base_parent.__get__(serializer, type(serializer)))
-        return serializer
-
-    for mapping_field in SettingsImportAPI.mapping_fields:
-        # Если есть заменяемые значения поля
-        if mapping_field['parent']:
-            # Добавление собираемого на фабрике метода get_<field_name>
-            serializer = fabric_get_parent_method(mapping_field['to_field'], mapping_field['parent'],
-                                                  SettingsImportAPI.use_model, MySerializer)
-            # Добавление поля, обращающегося к методу get_<field_name>
-            setattr(serializer, mapping_field['to_field'], serializers.SerializerMethodField(method_name='get_parentcode'))
-        # Если нет поиска родительского значения
-        else:
-            setattr(MySerializer, mapping_field['json_field'], serializers.SerializerMethodField(source=mapping_field['to_field']))
-
-
-    return MySerializer
 
 class APISerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source='code')
+    budgettype = serializers.SerializerMethodField(source='budgtypecode')
+    #def get_name(self, instance):
+    #    print(F"instance - {instance}")
+    #    return 'jgbnsdljfndsnvdzkfvn '
     class Meta:
         model = SettingsImportAPI.use_model
         if SettingsImportAPI.fields:
@@ -67,10 +28,40 @@ class APISerializer(serializers.ModelSerializer):
         return SettingsImportAPI.use_model.objects.create(**validated_data)
 
 
+
+class TestSerializer(serializers.ModelSerializer):
+    all_fixed_fields = {'enddate': {'': None}}
+    class Meta:
+        model = SettingsImportAPI.use_model
+        fields = ("code", "name", "budgtypecode", "enddate", "startdate", "status", "loaddate", "parentcode")
+        extra_kwargs = {
+            "budgtypecode": {"source": "budgettype"},
+        }
+    def fixed_field(self):
+        #Изменяет значения полей на допустимые
+        if self.initial_data['enddate'] == '':
+            self.initial_data['enddate'] = None
+        #for field in self.initial_data:
+        #    if field in self.all_fixed_fields:
+        #        if field == self.all_fixed_fields[field]:
+        #            self.initial_data[field] = self.all_fixed_fields[field][self.all_fixed_fields[field]]
+
+        #for field in self.all_fixed_fields:
+        #    if self.initial_data[field] == self.all_fixed_fields[field]:
+        #        print(F"self.initial_data[field] - {self.initial_data[field]}, self.all_fixed_fields[field] - {self.all_fixed_fields[field]}")
+        #        self.initial_data[field] = self.all_fixed_fields[field][self.initial_data[field]]
+        #        print(
+        #            F"self.initial_data[field] - {self.initial_data[field]} \n")
+
+
+
+
+
+
 class APIParser:
     """ Генерирует url страниц, скачивает JSON содержимое, обрабатывает и записывает в БД """
-    len_page = 1000
-    serializer = assembler_serializer()
+    len_page = 10
+    serializer = TestSerializer
 
     def replacingFieldsValues(self, block):
         """ Заменяет список указанных в параметрах значений полей"""
@@ -93,8 +84,11 @@ class APIParser:
         """ Запрашивает у генератора URL, отправляет запрос, получает и обрабатывает ответ, разбирает на блоки """
         start = time.time()
         number_page = 1
-        self.serializer.get_parentcode({'code': '1'})
-        print(f"\n\nМетоды - {inspect.getmembers(self.serializer, predicate=inspect.ismethod)}\n\n")
+        #print(self.serializer.get_parentcode({'code': '1'}))
+        #print(self.serializer.parentcode)
+        #print(self.serializer.get_fields(self.serializer))
+        #print(repr(self.serializer()))
+        #print(f"\n\nМетоды - {inspect.getmembers(self.serializer, predicate=inspect.ismethod)}\n\n")
         # Цикл по генерируемым URL страниц.
         while True:
             url = self.urlGenerator(number_page)
@@ -107,10 +101,10 @@ class APIParser:
                 #Проходим по полученным блокам информации
                 for number_block, block in enumerate(data['data']):
                     #Замена значений полей на допустимые
-                    self.replacingFieldsValues(block)
+                    #self.replacingFieldsValues(block)
                     # Поиск родительского элемента
-                    #if SettingsImportAPI.search_parent and block[SettingsImportAPI.json_parent_field]:
-                    #    self.searchParent(block)
+                    if SettingsImportAPI.search_parent and block[SettingsImportAPI.json_parent_field]:
+                        self.searchParent(block)
                     #Проверяем нет ли такого же элемента
                     not_unique = SettingsImportAPI.use_model.objects.filter(code=block[SettingsImportAPI.unique_field])
                     if not_unique:
@@ -121,12 +115,14 @@ class APIParser:
                         if getattr(model_obj, SettingsImportAPI.unique_field) == block[
                             SettingsImportAPI.unique_field] and date > getattr(model_obj, SettingsImportAPI.date_field):
                             in_serializer = self.serializer(model_obj, data=block)
+                            in_serializer.fixed_field()
                             if in_serializer.is_valid(raise_exception=True):
                                 in_serializer.save()
                             else:
                                 print(F"Ошибка валидации обновляемой записи - {in_serializer.errors.keys()}")
                     else:
                         in_serializer = self.serializer(data=block)
+                        in_serializer.fixed_field()
                         if in_serializer.is_valid(raise_exception=True):
                             #Если проходит проверку то сохраняем в бд
                             in_serializer.save()
