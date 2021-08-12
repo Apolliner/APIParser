@@ -53,138 +53,7 @@ class APIImport:
 
 
 
-[('Meta', <class 'ImportAPI.management.commands.parser.assembler_serializer.<locals>.MySerializer.Meta'>),
-('__class__', <class 'rest_framework.serializers.SerializerMetaclass'>),
-('__class_getitem__', <bound method BaseSerializer.__class_getitem__ of <class 'ImportAPI.management.commands.parser.assembler_serializer.<locals>.MySerializer'>>),
-('__deepcopy__', <function Field.__deepcopy__ at 0x0000026F84965F70>),
-('__delattr__', <slot wrapper '__delattr__' of 'object' objects>),
 
-('__dict__', mappingproxy({
-'__module__': 'ImportAPI.management.commands.parser', '__doc__': ' Базовый сериализатор',
-'Meta': <class 'ImportAPI.management.commands.parser.assembler_serializer.<locals>.MySerializer.Meta'>,
-'_declared_fields': OrderedDict(),
-'budgtypecode': SerializerMethodField(source='budgettype'),
-'enddate': SerializerMethodField(source='enddate'),
-
-'get_parentcode': <bound method assembler_serializer.<locals>.fabric_get_parent_method.<locals>.get_base_parent of
-<class 'ImportAPI.management.commands.parser.assembler_serializer.<locals>.MySerializer'>>,
-
-'parentcode': SerializerMethodField()
-})),
-('__dir__', <method '__dir__' of 'object' objects>),
-('__doc__', ' Базовый сериализатор'),
-('__eq__', <slot wrapper '__eq__' of 'object' objects>),
-('__format__', <method '__format__' of 'object' objects>),
-('__ge__', <slot wrapper '__ge__' of 'object' objects>),
-('__getattribute__', <slot wrapper '__getattribute__' of 'object' objects>),
-('__getitem__', <function Serializer.__getitem__ at 0x0000026F8498DE50>),
-('__gt__', <slot wrapper '__gt__' of 'object' objects>),
-('__hash__', <slot wrapper '__hash__' of 'object' objects>),
-('__init__', <function BaseSerializer.__init__ at 0x0000026F8497C670>),
-('__init_subclass__', <built-in method __init_subclass__ of SerializerMetaclass object at 0x0000026F8403CB20>),
-('__iter__', <function Serializer.__iter__ at 0x0000026F8498DDC0>),
-('__le__', <slot wrapper '__le__' of 'object' objects>),
-('__lt__', <slot wrapper '__lt__' of 'object' objects>),
-('__module__', 'ImportAPI.management.commands.parser'),
-('__ne__', <slot wrapper '__ne__' of 'object' objects>),
-('__new__', <function BaseSerializer.__new__ at 0x0000026F8498AD30>),
-('__reduce__', <method '__reduce__' of 'object' objects>),
-('__reduce_ex__', <method '__reduce_ex__' of 'object' objects>),
-('__repr__', <function Serializer.__repr__ at 0x0000026F8498DD30>),
-('__setattr__', <slot wrapper '__setattr__' of 'object' objects>),
-('__sizeof__', <method '__sizeof__' of 'object' objects>),
-('__str__', <slot wrapper '__str__' of 'object' objects>),
-('__subclasshook__', <built-in method __subclasshook__ of SerializerMetaclass object at 0x0000026F8403CB20>),
-('__weakref__', <attribute '__weakref__' of 'Field' objects>),
-('_creation_counter', 6),
-('_declared_fields', OrderedDict()),
-('_get_model_fields', <function ModelSerializer._get_model_fields at 0x0000026F8498F160>),
-('_read_only_defaults', <function Serializer._read_only_defaults at 0x0000026F8498DA60>),
-('_readable_fields', <property object at 0x0000026F8497FBD0>),
-('_writable_fields', <property object at 0x0000026F8497F7C0>),
-('bind', <function Field.bind at 0x0000026F849655E0>),
-('budgtypecode', SerializerMethodField(source='budgettype')),
-('build_field', <function ModelSerializer.build_field at 0x0000026F8498EB80>),
-('build_nested_field', <function ModelSerializer.build_nested_field at 0x0000026F8498ED30>),
-('build_property_field', <function ModelSerializer.build_property_field at 0x0000026F8498EDC0>),
-('build_relational_field', <function ModelSerializer.build_relational_field at 0x0000026F8498ECA0>),
-('build_standard_field', <function ModelSerializer.build_standard_field at 0x0000026F8498EC10>),
-('build_unknown_field', <function ModelSerializer.build_unknown_field at 0x0000026F8498EEE0>),
-('build_url_field', <function ModelSerializer.build_url_field at 0x0000026F8498EE50>),
-('context', <property object at 0x0000026F8495EF40>),
-('create', <function ModelSerializer.create at 0x0000026F8498E8B0>),
-('data', <property object at 0x0000026F849859F0>),
-('default_empty_html', <class 'rest_framework.fields.empty'>),
-('default_error_messages', {'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}),
-('default_validators', []),
-('enddate', SerializerMethodField(source='enddate')),
-('errors', <property object at 0x0000026F84985A40>),
-('fail', <function Field.fail at 0x0000026F84965D30>),
-('fields', <django.utils.functional.cached_property object at 0x0000026F84981460>),
-('get_attribute', <function Field.get_attribute at 0x0000026F84965940>),
-('get_default', <function Field.get_default at 0x0000026F849659D0>),
-('get_default_field_names', <function ModelSerializer.get_default_field_names at 0x0000026F8498EAF0>),
-('get_extra_kwargs', <function ModelSerializer.get_extra_kwargs at 0x0000026F8498F040>),
-('get_field_names', <function ModelSerializer.get_field_names at 0x0000026F8498EA60>),
-('get_fields', <function ModelSerializer.get_fields at 0x0000026F8498E9D0>),
-('get_initial', <function Serializer.get_initial at 0x0000026F8498D8B0>),
-('get_parentcode', <bound method assembler_serializer.<locals>.fabric_get_parent_method.<locals>.get_base_parent of <class 'ImportAPI.management.commands.parser.assembler_serializer.<locals>.MySerializer'>>),
-('get_unique_for_date_validators', <function ModelSerializer.get_unique_for_date_validators at 0x0000026F8498F310>),
-('get_unique_together_validators', <function ModelSerializer.get_unique_together_validators at 0x0000026F8498F280>),
-('get_uniqueness_extra_kwargs', <function ModelSerializer.get_uniqueness_extra_kwargs at 0x0000026F8498F0D0>),
-('get_validators', <function ModelSerializer.get_validators at 0x0000026F8498F1F0>),
-('get_value', <function Serializer.get_value at 0x0000026F8498D940>),
-('include_extra_kwargs', <function ModelSerializer.include_extra_kwargs at 0x0000026F8498EF70>),
-('initial', None), ('is_valid', <function BaseSerializer.is_valid at 0x0000026F8498D1F0>),
-('many_init', <bound method BaseSerializer.many_init of <class 'ImportAPI.management.commands.parser.assembler_serializer.<locals>.MySerializer'>>),
-('parentcode', SerializerMethodField()),
-('root', <property object at 0x0000026F8495EEF0>),
-('run_validation', <function Serializer.run_validation at 0x0000026F8498D9D0>),
-('run_validators', <function Serializer.run_validators at 0x0000026F8498DAF0>),
-('save', <function BaseSerializer.save at 0x0000026F8498D160>),
-('serializer_choice_field', <class 'rest_framework.fields.ChoiceField'>),
-
-('serializer_field_mapping', {
- <class 'django.db.models.fields.AutoField'>: <class 'rest_framework.fields.IntegerField'>,
-<class 'django.db.models.fields.BigIntegerField'>: <class 'rest_framework.fields.IntegerField'>,
-<class 'django.db.models.fields.BooleanField'>: <class 'rest_framework.fields.BooleanField'>,
-<class 'django.db.models.fields.CharField'>: <class 'rest_framework.fields.CharField'>,
-<class 'django.db.models.fields.CommaSeparatedIntegerField'>: <class 'rest_framework.fields.CharField'>,
-<class 'django.db.models.fields.DateField'>: <class 'rest_framework.fields.DateField'>,
-<class 'django.db.models.fields.DateTimeField'>: <class 'rest_framework.fields.DateTimeField'>,
-<class 'django.db.models.fields.DecimalField'>: <class 'rest_framework.fields.DecimalField'>,
-<class 'django.db.models.fields.DurationField'>: <class 'rest_framework.fields.DurationField'>,
-<class 'django.db.models.fields.EmailField'>: <class 'rest_framework.fields.EmailField'>,
-<class 'django.db.models.fields.Field'>: <class 'rest_framework.fields.ModelField'>,
-<class 'django.db.models.fields.files.FileField'>: <class 'rest_framework.fields.FileField'>,
-<class 'django.db.models.fields.FloatField'>: <class 'rest_framework.fields.FloatField'>,
-<class 'django.db.models.fields.files.ImageField'>: <class 'rest_framework.fields.ImageField'>,
-<class 'django.db.models.fields.IntegerField'>: <class 'rest_framework.fields.IntegerField'>,
-<class 'django.db.models.fields.NullBooleanField'>: <class 'rest_framework.fields.BooleanField'>,
-<class 'django.db.models.fields.PositiveIntegerField'>: <class 'rest_framework.fields.IntegerField'>,
-<class 'django.db.models.fields.PositiveSmallIntegerField'>: <class 'rest_framework.fields.IntegerField'>,
-<class 'django.db.models.fields.SlugField'>: <class 'rest_framework.fields.SlugField'>,
-<class 'django.db.models.fields.SmallIntegerField'>: <class 'rest_framework.fields.IntegerField'>,
-<class 'django.db.models.fields.TextField'>: <class 'rest_framework.fields.CharField'>,
-<class 'django.db.models.fields.TimeField'>: <class 'rest_framework.fields.TimeField'>,
-<class 'django.db.models.fields.URLField'>: <class 'rest_framework.fields.URLField'>,
-<class 'django.db.models.fields.UUIDField'>: <class 'rest_framework.fields.UUIDField'>,
-<class 'django.db.models.fields.GenericIPAddressField'>: <class 'rest_framework.fields.IPAddressField'>,
-<class 'django.db.models.fields.FilePathField'>: <class 'rest_framework.fields.FilePathField'>,
-<class 'django.db.models.fields.json.JSONField'>: <class 'rest_framework.fields.JSONField'>
-}),
-
-('serializer_related_field', <class 'rest_framework.relations.PrimaryKeyRelatedField'>),
-('serializer_related_to_field', <class 'rest_framework.relations.SlugRelatedField'>),
-('serializer_url_field', <class 'rest_framework.relations.HyperlinkedIdentityField'>),
-('to_internal_value', <function Serializer.to_internal_value at 0x0000026F8498DB80>),
-('to_representation', <function Serializer.to_representation at 0x0000026F8498DC10>),
-('update', <function ModelSerializer.update at 0x0000026F8498E940>),
-('url_field_name', None),
-('validate', <function Serializer.validate at 0x0000026F8498DCA0>),
-('validate_empty_values', <function Field.validate_empty_values at 0x0000026F84965A60>),
-('validated_data', <property object at 0x0000026F8496EB80>),
-('validators', <property object at 0x0000026F84966040>)]
 
 from rest_framework.parsers import JSONParser
 from django.core.management.base import BaseCommand
@@ -345,3 +214,249 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         parser = APIParser()
         parser.parse()
+
+
+
+class FabricSerializer():
+    """
+        Собирает сериализатор с нужными параметрами поиска и замены полей
+    """
+    _all_fixed_fields = ''
+    _parent_field = ''
+    _date_fields = ''
+    _date_format = ''
+    _unique_field = ''
+    _replacing_field_values = ''
+    _comparison_field = ''
+    def __init__(self, model, fields_mapping):
+        self.model = model
+        self.fields_mapping = fields_mapping
+
+    class BaseAPISerializer(serializers.ModelSerializer):
+        """ Базовый сериализатор"""
+        def __init__(self, instance=None, data=empty, **kwargs):
+            """
+                При нобходимости заменяет значения полей в полученных данных, определяет родительский элемент и
+                наличие такого же элемента в БД, самостоятельно определяя создание нового элемента или обновление старого.
+            """
+            data = self.fixed_field(data)
+            data = self.fixed_date_field(data)
+            data = self.search_parent(data)
+            instance, data = self.search_in_model(instance, data)
+            super().__init__(instance, data, **kwargs)
+
+        def fixed_field(self, data):
+            """ Пустышка """
+            return data
+
+        def fixed_date_field(self, data):
+            """ Пустышка """
+            return data
+
+        def search_parent(self, data):
+            """ Пустышка """
+            return data
+
+        def search_in_model(self, instance, data):
+            """ Пустышка """
+            return instance, data
+
+    class APISerializer(BaseAPISerializer):
+        """ Сериализатор для переопределния методов и полей"""
+        class Meta:
+            pass
+
+    def get_serializer(self):
+        """ Возвращает сериализатор с нужными настройками"""
+        serializer = self.APISerializer
+        serializer.Meta.model = self.model
+        serializer.Meta.fields = self.get_fields()
+        serializer.Meta.extra_kwargs = self.get_extra_kwargs()
+        # Определение того надо ли заменять значения полей
+        all_fixed_fields = self.get_fixed_fiels()
+        if all_fixed_fields:
+            serializer._all_fixed_fields = all_fixed_fields
+            serializer.fixed_field = self.fixed_field
+        # Определение того надо ли именять формат дат
+        date_fields, date_format = self.get_fixed_date()
+        if date_fields:
+            serializer._date_fields = date_fields
+            serializer._date_format = date_format
+            serializer.fixed_date_field = self.fixed_date_field
+        # Определение того надо ли искать родительский элемент
+        parent_field = self.get_search_parent()
+        if parent_field:
+            serializer._parent_field = parent_field
+            serializer.search_parent = self.search_parent
+        # Определение остальных важных настроек
+        unique_field, comparison_field = self.get_outher_settings()
+        if unique_field:
+            serializer._unique_field = unique_field
+            serializer._comparison_field = comparison_field
+            serializer.search_in_model = self.search_in_model
+        return serializer
+    def get_fields(self):
+        """ Возвращает список используемых полей"""
+        fields = []
+        for field in self.fields_mapping:
+            fields.append(field['json_field'])
+        return fields
+
+    def get_extra_kwargs(self):
+        """ Возвращает список extra_kwargs """
+        extra_kwargs = dict()
+        for field in self.fields_mapping:
+            if field['json_field'] != field['to_field']:
+                extra_kwargs[field['json_field']] = {'source': field['to_field']}
+        return extra_kwargs
+
+    def get_fixed_fiels(self):
+        """ Определяет наличие заменяемых полей и возвращает словарь {'field': {'old_value': 'new_value'}}"""
+        all_fixed_fields = dict()
+        for field in self.fields_mapping:
+            if field['values_map']:
+                all_fixed_fields[field['json_field']] = field['values_map']
+        return all_fixed_fields
+
+    def fixed_field(self, data):
+        """ Изменяет значения полей на допустимые """
+        if data is not empty:
+            for field in self._all_fixed_fields:
+                if data[field] in self._all_fixed_fields[field].keys():
+                    data[field] = self._all_fixed_fields[field][data[field]]
+        return data
+
+    def get_fixed_date(self):
+        """ Определяет наличие заменяемых дат, на указанный формат"""
+        date_fields = []
+        date_format = ''
+        for field in self.fields_mapping:
+            if field['fixed_date']:
+                date_fields.append(field['json_field'])
+                date_format = field['fixed_date']
+        return date_fields, date_format
+
+    def fixed_date_field(self, data):
+        """ Изменяет формат полей datetime на допустимые """
+        if data is not empty:
+            for date_field in self._date_fields:
+                data[date_field] = datetime.strptime(data[date_field], self._date_format)
+        return data
+
+    def get_search_parent(self):
+        """ Определяет требуется ли поиск родительского элемента"""
+        for field in self.fields_mapping:
+            if field['parent']:
+                return field['json_field']
+
+    def search_parent(self, data):
+        """ Ищет родительский элемент"""
+        if data is not empty:
+            if data[self._parent_field]:
+                parent = self.Meta.model.objects.filter(
+                    code__icontains=int(data[self._parent_field]))
+                if parent:
+                    data[self._parent_field] = parent[0].id
+                else:
+                    data[self._parent_field] = ''
+        return data
+
+    def get_outher_settings(self):
+        """ Возвращает остальные важные настройки"""
+        unique_field = ''
+        comparison_field = ''
+        for field in self.fields_mapping:
+            if field['unique']:
+                unique_field = field['json_field']
+            elif field['comparison']:
+                comparison_field = field['json_field']
+        return unique_field, comparison_field
+
+    def search_in_model(self, instance, data):
+        """ Ищет в модели уже существующий элемент и при нахождении возвращает его. Иначе возвращает None"""
+        if instance is None:
+            in_model = self.model.objects.filter(code=data[self._unique_field])
+            if in_model:
+                # Проверка на "свежесть" имеющейся записи
+                if data[self._comparison_field] > getattr(in_model[0], self._comparison_field):
+                    return in_model[0], data
+                # Проверка на найденный при повторном проходе родительский элемент
+                if data[self._parent_field] != '' and data[self._parent_field] != getattr(in_model[0], self._parent_field):
+                    return in_model[0], data
+                else: #Если получаемая запись не актуальна
+                    return None, None
+            else: #Если записи нет в бд
+                return None, data
+        return instance, data
+
+    class TestSerializer(serializers.ModelSerializer):
+        _all_fixed_fields = {'enddate': {'': None}}
+        _parent_field = SettingsImportAPI.json_parent_field
+        _date_fields = SettingsImportAPI.date_field
+        _date_format = SettingsImportAPI.date_format
+        _unique_field = SettingsImportAPI.unique_field
+        _replacing_field_values = SettingsImportAPI.replacing_field_values
+        _comparison_field = 'loaddate'
+
+        def __init__(self, instance=None, data=empty, **kwargs):
+            """
+                Заменяет значения полей в полученных данных, определяет родительский элемент и
+                наличие такого же элемента в БД, самостоятельно определяя создание нового элемента или обновление старого.
+            """
+            data = self.fixed_field(data)
+            data = self.fixed_date_field(data)
+            data = self.search_parent(data)
+            instance, data = self.search_in_model(instance, data)
+            super().__init__(instance, data, **kwargs)
+
+        class Meta:
+            model = SettingsImportAPI.use_model
+            fields = ("code", "name", "budgtypecode", "enddate", "startdate", "status", "loaddate", "parentcode")
+            extra_kwargs = {
+                "budgtypecode": {"source": "budgettype"},
+            }
+
+        def search_in_model(self, instance, data):
+            """ Ищет в модели уже существующий элемент и при нахождении возвращает его. Иначе возвращает None"""
+            if instance is None:
+                in_model = self.Meta.model.objects.filter(code=data[self._unique_field])
+                if in_model:
+                    # Проверка на "свежесть" имеющейся записи
+                    if data[self._comparison_field] > getattr(in_model[0], self._comparison_field):
+                        return in_model[0], data
+                    # Проверка на найденный при повторном проходе родительский элемент
+                    if data[self._parent_field] != '' and data[self._parent_field] != getattr(in_model[0],
+                                                                                              self._parent_field):
+                        return in_model[0], data
+                    else:  # Если получаемая запись не актуальна
+                        return None, None
+                else:  # Если записи нет в бд
+                    return None, data
+            return instance, data
+
+        def fixed_field(self, data):
+            """ Изменяет значения полей на допустимые """
+            if data is not empty:
+                for field in self._replacing_field_values:
+                    if data[field] in self._replacing_field_values[field].keys():
+                        data[field] = self._replacing_field_values[field][data[field]]
+            return data
+
+        def fixed_date_field(self, data):
+            """ Изменяет формат полей datetime на допустимые """
+            if data is not empty:
+                for date_field in self._date_fields:
+                    data[date_field] = datetime.strptime(data[date_field], self._date_format)
+            return data
+
+        def search_parent(self, data):
+            """ Ищет родительский элемент"""
+            if data is not empty:
+                if data[self._parent_field]:
+                    parent = self.Meta.model.objects.filter(
+                        code__icontains=int(data[self._parent_field]))
+                    if parent:
+                        data[self._parent_field] = parent[0].id
+                    else:
+                        data[self._parent_field] = ''
+            return data
