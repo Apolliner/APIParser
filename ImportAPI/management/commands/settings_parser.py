@@ -4,12 +4,6 @@ from ImportAPI.models import Budget, GlavBudgetClass
     Настройки парсера
 """
 
-def get_fields(mapping_fields):
-    """ Возвращает список используемых полей"""
-    fields = []
-    for field in mapping_fields:
-        fields.append(field['json_field'])
-    return fields
 
 class SettingsImportBudget:
     """ Настройки парсера budget"""
@@ -49,8 +43,6 @@ class SettingsImportBudget:
 
         ]
 
-    fields = get_fields(mapping_fields)
-
 
 class SettingsImportGlavBudget:
     """ Настройки парсера GlavBudget"""
@@ -76,8 +68,6 @@ class SettingsImportGlavBudget:
          'fixed_date': '%Y-%m-%d %H:%M:%S.%f', 'comparison': False, 'unique': False},
 
     ]
-
-    fields = get_fields(mapping_fields)
 
 
 class SettingsImportAPI(SettingsImportBudget):
