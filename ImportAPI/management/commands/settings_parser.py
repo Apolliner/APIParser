@@ -9,7 +9,7 @@ class SettingsImportBudget:
     """ Настройки парсера budget"""
     base_url = 'http://budget.gov.ru/epbs/registry/7710568760-BUDGETS/data'
     # Дополнительные условия поиска писать по порядку, разделяя символом '&'
-    conditions_url = 'filterstatus=ACTIVE'
+    conditions_url = 'filterstatus=ACTIVE&sortField=parentcode&sortDir=asc'
 
     """ Настройки сериализатора """
     # Используемая модель БД
